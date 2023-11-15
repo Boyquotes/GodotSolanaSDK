@@ -10,7 +10,8 @@ func _ready() -> void:
 
 
 func confirm_login(login_success:bool) -> void:
-	get_tree().change_scene_to_packed(scene_to_load)
+	if login_success:
+		get_tree().change_scene_to_packed(scene_to_load)
 
 
 func _on_login_button_pressed() -> void:

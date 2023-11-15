@@ -1,6 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://b2dmsrk6j12y4"]
+[gd_scene load_steps=4 format=3 uid="uid://b2dmsrk6j12y4"]
 
 [ext_resource type="Script" path="res://Scripts/solana_client.gd" id="1_n3w0e"]
+
+[sub_resource type="Pubkey" id="Pubkey_pioyk"]
+type = "CUSTOM"
+value = "11111111111111111111111111111111"
+bytes = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+[sub_resource type="Instruction" id="Instruction_3wcn3"]
+program_id = SubResource("Pubkey_pioyk")
 
 [node name="SolanaClient" type="Control"]
 layout_mode = 3
@@ -13,6 +21,11 @@ script = ExtResource("1_n3w0e")
 custom_rpc = "https://rpc.hellomoon.io/6b758f53-4b78-41a7-86a9-6b61c97711eb"
 
 [node name="PhantomController" type="PhantomController" parent="."]
+
+[node name="SolTransferTransaction" type="Transaction" parent="." node_paths=PackedStringArray("payer")]
+use_phantom_payer = true
+payer = NodePath("../PhantomController")
+instructions = [SubResource("Instruction_3wcn3")]
 
 [node name="TransactionOverlay" type="CanvasLayer" parent="."]
 visible = false
