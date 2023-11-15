@@ -8,3 +8,4 @@ var solana_client
 func _ready() -> void:
 	solana_client = get_node("/root/SolanaClient")
 	welcome_label.text = "Welcome back,\n%s" % [solana_client.get_public_key()]
+	sol_balance.text = str(solana_client.get_sol_balance())

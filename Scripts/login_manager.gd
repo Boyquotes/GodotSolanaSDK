@@ -2,11 +2,11 @@ extends Node
 
 @export var scene_to_load:PackedScene
 
-var wallet_controller
+var solana_client
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	wallet_controller = get_node("/root/SolanaClient")
-	wallet_controller.connect("on_logged_in",confirm_login)	
+	solana_client = get_node("/root/SolanaClient")
+	solana_client.connect("on_logged_in",confirm_login)	
 
 
 func confirm_login(login_success:bool) -> void:
@@ -14,4 +14,4 @@ func confirm_login(login_success:bool) -> void:
 
 
 func _on_login_button_pressed() -> void:
-	wallet_controller.try_login()
+	solana_client.try_login()
