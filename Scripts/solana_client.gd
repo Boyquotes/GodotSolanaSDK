@@ -47,15 +47,15 @@ func send_transaction(receiver:String,amount:float) -> void:
 	
 	ui_overlay.visible=true
 	
-#	var transaction:Transaction = Transaction.new()
-#
-#	var instructions:Array[Instruction]
-#	var sol_transfer_ix:Instruction = Instruction.new()
-	
-#	var PID := Pubkey.new()
-#	PID.set_value("11111111111111111111111111111111") 
-#	sol_transfer_ix.program_id = PID
-#	print(sol_transfer_ix.program_id)
+	var transaction:Transaction = Transaction.new()
+
+	var instructions:Array[Instruction]
+	var sol_transfer_ix:Instruction = Instruction.new()
+
+	var PID := Pubkey.new()
+	PID.set_value("11111111111111111111111111111111") 
+	sol_transfer_ix.program_id = PID
+	print(sol_transfer_ix.program_id)
 	var packed_send_amount:PackedByteArray = pack_send_amount(int(amount*1000000000))
 	
 	var ix_data:PackedByteArray = PackedByteArray()
@@ -65,30 +65,33 @@ func send_transaction(receiver:String,amount:float) -> void:
 	ix_data[2] = packed_send_amount[1]
 	ix_data[3] = packed_send_amount[2]
 	ix_data[4] = packed_send_amount[3]
-#	sol_transfer_ix.data = ix_data
-	sol_transfer_transaction.get_instructions()[0].data = ix_data
+	sol_transfer_ix.data = ix_data
+#	sol_transfer_transaction.get_instructions()[0].data = ix_data
 
 	var receiver_account=AccountMeta.new() as AccountMeta
-	receiver_account.key = SolanaSDK.bs58_decode(receiver)
-#	sol_transfer_ix.accounts.append(receiver_account)
-	sol_transfer_transaction.get_instructions()[0].accounts.append(receiver_account)
+	var receiver_key := Pubkey.new()
+	receiver_key.set_value(receiver) 
+	receiver_account.key = receiver_key
+	receiver_account.writeable = true
+	sol_transfer_ix.set_accounts([receiver_account])
+#	sol_transfer_transaction.get_instructions()[0].set_accounts([receiver_account])
 	
-#	instructions.append(sol_transfer_ix)
-#	transaction.set_instructions(instructions)
-#	transaction.use_phantom_payer = true
-#	transaction.set_payer(phantom_controller)
-#	transaction.create_message()
-#	transaction.update_latest_blockhash("")
-#	print(transaction.serialize())
-#	transaction.sign()
-#	await transaction.fully_signed
-#	transaction.send()
+	instructions.append(sol_transfer_ix)
+	transaction.set_instructions(instructions)
+	transaction.use_phantom_payer = true
+	transaction.set_payer(phantom_controller)
+	transaction.create_message()
+	transaction.update_latest_blockhash("")
+	print(transaction.serialize())
+	transaction.sign()
+	await transaction.fully_signed
+	transaction.send()
 	
-	sol_transfer_transaction.update_latest_blockhash("")
-	print(sol_transfer_transaction.serialize())
-	sol_transfer_transaction.sign()
-	await sol_transfer_transaction.fully_signed
-	sol_transfer_transaction.send()
+#	sol_transfer_transaction.update_latest_blockhash("")
+#	print(sol_transfer_transaction.serialize())
+#	sol_transfer_transaction.sign()
+#	await sol_transfer_transaction.fully_signed
+#	sol_transfer_transaction.send()
 	
 func process_transaction_pass(transaction_id:PackedByteArray) -> void:	
 	emit_signal("on_transaction_finish",transaction_id)
