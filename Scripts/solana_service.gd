@@ -83,9 +83,6 @@ func send_transaction(receiver:String,amount:float) -> void:
 	transaction.set_payer(phantom_controller)
 
 	transaction.update_latest_blockhash("")
-	transaction.create_message()
-	transaction.serialize()
-	
 	
 	transaction.sign()
 	await transaction.fully_signed
