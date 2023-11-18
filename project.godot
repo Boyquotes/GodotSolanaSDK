@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-SolanaClient="*res://Autoload/SolanaClient.tscn"
+SolanaService="*res://Autoload/SolanaService.tscn"
 
 [display]
 

@@ -6,13 +6,13 @@ extends Node
 
 @onready var LineEditRegEx = RegEx.new()
 
-var solana_client
+var solana_service
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	LineEditRegEx.compile("^[0-9.]*$")
 	
-	solana_client = get_node("/root/SolanaClient")
-	solana_client.connect("on_transaction_finish", transaction_finish_callback)
+	solana_service = get_node("/root/SolanaService")
+	solana_service.connect("on_transaction_finish", transaction_finish_callback)
 	pass # Replace with function body.
 
 
@@ -25,18 +25,15 @@ func _process(delta: float) -> void:
 
 
 func _on_send_button_pressed() -> void:
-	var test_receiver = "FXyyJSV6Xan9Kf275pryFMFsXBtjWA7HWghF1fTm6ZxJ"
-	var test_amount = 0.1
-#	solana_client.send_transaction(str(receiver_input.text),float(amount_input.text))
-	solana_client.send_transaction(test_receiver,test_amount)
+	solana_service.send_transaction(str(receiver_input.text),float(amount_input.text))
 	pass
 	
-func transaction_finish_callback(success:bool) -> void:
-	if success:
+func transaction_finish_callback(transaction_id:String) -> void:
+	print(transaction_id)
+	if transaction_id != null:
 		receiver_input.clear()
 		amount_input.clear()
 	
-
 
 var old_amount_text = ""
 func _on_amount_input_field_text_changed(new_text: String) -> void:
